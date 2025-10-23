@@ -24,7 +24,7 @@ protected:
 
 private:
 
-	UPROPERTY(EditDefaultsOnly, Category = "SBS|Input|Movement")
+	UPROPERTY(EditDefaultsOnly, Category = "SBS|Input")
 	TArray<TObjectPtr<UInputMappingContext>> InputMappingContexts;
 
 	UPROPERTY(EditDefaultsOnly, Category = "SBS|Input|Movement")

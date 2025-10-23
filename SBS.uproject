@@ -16,11 +16,8 @@
       "Enabled": true
     },
     {
-      "Name": "VisualStudioTools",
-      "Enabled": true,
-      "SupportedTargetPlatforms": [
-        "Win64"
-      ]
+      "Name": "GameplayAbilities",
+      "Enabled": true
     }
   ],
   "TargetPlatforms": [],

@@ -12,6 +12,11 @@ ASBS_BaseCharacter::ASBS_BaseCharacter()
 	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 }
 
+UAbilitySystemComponent* ASBS_BaseCharacter::GetAbilitySystemComponent() const
+{
+	return nullptr;
+}
+
 
 
 

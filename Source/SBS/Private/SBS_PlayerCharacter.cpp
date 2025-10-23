@@ -6,6 +6,8 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/SBS_PlayerState.h"
+#include "AbilitySystemComponent.h"
 
 ASBS_PlayerCharacter::ASBS_PlayerCharacter()
 {
@@ -33,4 +35,29 @@ ASBS_PlayerCharacter::ASBS_PlayerCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>("FollowCamera");
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
+}
+
+UAbilitySystemComponent* ASBS_PlayerCharacter::GetAbilitySystemComponent() const
+{
+	ASBS_PlayerState* SBSPlayerState = Cast<ASBS_PlayerState>(GetPlayerState<ASBS_PlayerState>());
+	if (!IsValid(SBSPlayerState)) return nullptr;
+	return SBSPlayerState->GetAbilitySystemComponent();
+}
+
+void ASBS_PlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	
+	if (!IsValid(GetAbilitySystemComponent())) return;
+
+	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+
+}
+
+void ASBS_PlayerCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	if (!IsValid(GetAbilitySystemComponent())) return;
+
+	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
 }
