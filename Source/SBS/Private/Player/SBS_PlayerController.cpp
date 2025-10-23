@@ -30,6 +30,7 @@ void ASBS_PlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ThisClass::StopJumping);
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
+	EnhancedInputComponent->BindAction(PrimaryAction, ETriggerEvent::Started, this, &ThisClass::Primary);
 }
 
 void ASBS_PlayerController::Jump()
@@ -68,4 +69,10 @@ void ASBS_PlayerController::Look(const FInputActionValue& Value)
 	//Add yaw and pitch input to controller
 	AddYawInput(LookAxisVector.X);
 	AddPitchInput(LookAxisVector.Y);
+}
+void ASBS_PlayerController::Primary()
+{
+	// Primary action
+	UE_LOG(LogTemp, Warning, TEXT("Primary Action Pressed"));	
+
 }
