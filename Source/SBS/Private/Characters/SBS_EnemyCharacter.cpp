@@ -2,13 +2,13 @@
 
 
 #include "Characters/SBS_EnemyCharacter.h"
-#include "AbilitySystemComponent.h"	
+#include "AbilitySystem/SBSAbilitySystemComponent.h"
 
 ASBS_EnemyCharacter::ASBS_EnemyCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent = CreateDefaultSubobject<USBSAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 }

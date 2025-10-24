@@ -2,7 +2,7 @@
 
 
 #include "Player/SBS_PlayerState.h"
-#include "AbilitySystemComponent.h"
+#include "AbilitySystem/SBSAbilitySystemComponent.h"
 
 ASBS_PlayerState::ASBS_PlayerState()
 {
@@ -10,7 +10,7 @@ ASBS_PlayerState::ASBS_PlayerState()
 	SetNetUpdateFrequency(100.f);
 
 	//Ability System Component
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent = CreateDefaultSubobject<USBSAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 }
