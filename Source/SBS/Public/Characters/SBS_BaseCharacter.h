@@ -7,6 +7,8 @@
 #include "AbilitySystemInterface.h"
 #include "SBS_BaseCharacter.generated.h"
 
+class UGameplayAbility;
+
 UCLASS(Abstract)
 class SBS_API ASBS_BaseCharacter : public ACharacter, public IAbilitySystemInterface
 {
@@ -16,5 +18,14 @@ public:
 	ASBS_BaseCharacter();
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+protected:
+
+	void GiveStartupAbilities();
+
+private:
+
+	UPROPERTY(EditDefaultsOnly, Category = "SBS|Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 
 };

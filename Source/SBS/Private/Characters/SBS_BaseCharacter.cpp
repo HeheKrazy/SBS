@@ -2,6 +2,7 @@
 
 
 #include "Characters/SBS_BaseCharacter.h"
+#include "AbilitySystemComponent.h"
 
 ASBS_BaseCharacter::ASBS_BaseCharacter()
 {
@@ -15,6 +16,17 @@ ASBS_BaseCharacter::ASBS_BaseCharacter()
 UAbilitySystemComponent* ASBS_BaseCharacter::GetAbilitySystemComponent() const
 {
 	return nullptr;
+}
+
+void ASBS_BaseCharacter::GiveStartupAbilities()
+{
+	if (!IsValid(GetAbilitySystemComponent())) return;
+	for(const auto & Ability : StartupAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec(Ability);
+		GetAbilitySystemComponent()->GiveAbility(AbilitySpec);
+	}
+
 }
 
 
