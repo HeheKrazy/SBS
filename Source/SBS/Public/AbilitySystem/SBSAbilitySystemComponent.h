@@ -15,11 +15,12 @@ class SBS_API USBSAbilitySystemComponent : public UAbilitySystemComponent
 	GENERATED_BODY()
 
 public:
-	USBSAbilitySystemComponent();
-	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-protected:
-
-	virtual void BeginPlay() override;
+	virtual void OnGiveAbility(FGameplayAbilitySpec& AbilitySpec) override;
+	virtual void OnRep_ActivateAbilities() override;
 	
+
+private:
+
+	void HandleAutoActivatedAbility(const FGameplayAbilitySpec& AbilitySpec);
 };

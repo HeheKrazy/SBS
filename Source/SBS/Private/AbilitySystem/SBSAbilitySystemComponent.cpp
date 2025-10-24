@@ -2,20 +2,36 @@
 
 
 #include "AbilitySystem/SBSAbilitySystemComponent.h"
+#include "GameplayTags/SBSTags.h"
 
-USBSAbilitySystemComponent::USBSAbilitySystemComponent()
+void USBSAbilitySystemComponent::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	Super::OnGiveAbility(AbilitySpec);
+	HandleAutoActivatedAbility(AbilitySpec);
+}
 
+void USBSAbilitySystemComponent::OnRep_ActivateAbilities()
+{
+	Super::OnRep_ActivateAbilities();
+
+	FScopedAbilityListLock ActiveScopeLock(*this);
+	for (auto& AbilitySpec : GetActivatableAbilities())
+	{
+		HandleAutoActivatedAbility(AbilitySpec);
+	}
 
 }
 
-void USBSAbilitySystemComponent::BeginPlay()
+void USBSAbilitySystemComponent::HandleAutoActivatedAbility(const FGameplayAbilitySpec& AbilitySpec)
 {
-	Super::BeginPlay();
-}
+	if (!IsValid(AbilitySpec.Ability)) return;
 
-void USBSAbilitySystemComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	for (const FGameplayTag& Tag : AbilitySpec.Ability->GetAssetTags())
+	{
+		if (Tag.MatchesTagExact(SBSTags::SBSAbilities::ActivateOnGiven))
+		{
+			TryActivateAbility(AbilitySpec.Handle);
+			return;
+		}
+	}
 }
