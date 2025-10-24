@@ -5,6 +5,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "GameplayTags/SBSTags.h"	
+#include "AbilitySystemComponent.h"
 
 void ASBS_PlayerController::SetupInputComponent()
 {
@@ -72,7 +75,14 @@ void ASBS_PlayerController::Look(const FInputActionValue& Value)
 }
 void ASBS_PlayerController::Primary()
 {
-	// Primary action
-	UE_LOG(LogTemp, Warning, TEXT("Primary Action Pressed"));	
-
+	ActivateAbility(SBSTags::SBSAbilities::Primary);
 }
+
+void ASBS_PlayerController::ActivateAbility(const FGameplayTag& AbilityTag) const
+{
+	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn());
+	if (!IsValid(ASC)) return;
+
+	ASC->TryActivateAbilitiesByTag(AbilityTag.GetSingleTagContainer());
+}
+
