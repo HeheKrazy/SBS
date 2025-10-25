@@ -9,6 +9,9 @@
 
 class UGameplayAbility;
 class UGameplayEffect;
+class UAttributeSet;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FASCInitialized, UAbilitySystemComponent*, ASC, UAttributeSet*, AS);
 
 UCLASS(Abstract)
 class SBS_API ASBS_BaseCharacter : public ACharacter, public IAbilitySystemInterface
@@ -19,6 +22,11 @@ public:
 	ASBS_BaseCharacter();
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual UAttributeSet* GetAttributeSet() const { return nullptr; }
+
+	// Delegates
+	UPROPERTY(BlueprintAssignable)
+	FASCInitialized OnASCInitialized;
 
 protected:
 

@@ -17,6 +17,7 @@ public class SBS : ModuleRules
 			"GameplayAbilities",
 			"GameplayTags",
 			"GameplayTasks",
+			"UMG",
 
         });
 

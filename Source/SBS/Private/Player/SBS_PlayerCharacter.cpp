@@ -44,6 +44,14 @@ UAbilitySystemComponent* ASBS_PlayerCharacter::GetAbilitySystemComponent() const
 	return SBSPlayerState->GetAbilitySystemComponent();
 }
 
+UAttributeSet* ASBS_PlayerCharacter::GetAttributeSet() const
+{
+	ASBS_PlayerState* SBSPlayerState = Cast<ASBS_PlayerState>(GetPlayerState<ASBS_PlayerState>());
+	if (!IsValid(SBSPlayerState)) return nullptr;
+
+	return SBSPlayerState->GetAttributeSet();
+}
+
 void ASBS_PlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
@@ -51,6 +59,7 @@ void ASBS_PlayerCharacter::PossessedBy(AController* NewController)
 	if (!IsValid(GetAbilitySystemComponent()) || !HasAuthority()) return;
 
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
 	GiveStartupAbilities();
 	InitializeAttributes();
 }
@@ -61,4 +70,5 @@ void ASBS_PlayerCharacter::OnRep_PlayerState()
 	if (!IsValid(GetAbilitySystemComponent())) return;
 
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
 }
