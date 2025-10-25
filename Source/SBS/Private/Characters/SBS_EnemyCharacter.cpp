@@ -3,6 +3,7 @@
 
 #include "Characters/SBS_EnemyCharacter.h"
 #include "AbilitySystem/SBSAbilitySystemComponent.h"
+#include "AbilitySystem/SBS_AttributeSet.h"	
 
 ASBS_EnemyCharacter::ASBS_EnemyCharacter()
 {
@@ -11,6 +12,8 @@ ASBS_EnemyCharacter::ASBS_EnemyCharacter()
 	AbilitySystemComponent = CreateDefaultSubobject<USBSAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+
+	AttributeSet = CreateDefaultSubobject<USBS_AttributeSet>("AttributeSet");
 }
 
 UAbilitySystemComponent* ASBS_EnemyCharacter::GetAbilitySystemComponent() const

@@ -11,6 +11,7 @@
  */
 
 class UAbilitySystemComponent;
+class UAttributeSet;
 
 UCLASS()
 class SBS_API ASBS_EnemyCharacter : public ASBS_BaseCharacter
@@ -32,5 +33,8 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
 
 };
