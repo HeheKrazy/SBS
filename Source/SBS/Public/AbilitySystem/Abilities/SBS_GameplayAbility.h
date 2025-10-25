@@ -16,6 +16,8 @@ class SBS_API USBS_GameplayAbility : public UGameplayAbility
 
 public:
 
+	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "SBS|Debug")
 	bool bDrawDebugs = false;
 	

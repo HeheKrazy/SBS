@@ -8,27 +8,25 @@
 
 TArray<AActor*> USBS_Primary::HitBoxOverlapTest()
 {
-	//Ignore the owning actor
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.Add(GetAvatarActorFromActorInfo());
 
-	//Ensure overlap test ignores the avatar actor
+	// Ensure that the overlap test ignores the Avatar Actor
 	FCollisionQueryParams QueryParams;
 	QueryParams.AddIgnoredActors(ActorsToIgnore);
 
-	//Set collision response to only hit pawns
 	FCollisionResponseParams ResponseParams;
-	ResponseParams.CollisionResponse.SetAllChannels(ECollisionResponse::ECR_Ignore);
+	ResponseParams.CollisionResponse.SetAllChannels(ECR_Ignore);
 	ResponseParams.CollisionResponse.SetResponse(ECC_Pawn, ECR_Block);
 
 	TArray<FOverlapResult> OverlapResults;
 	FCollisionShape Sphere = FCollisionShape::MakeSphere(HitBoxRadius);
 
-	//Calculate hitbox location
-	const FVector ForwardVector = GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitBoxForwardOffset;
-	const FVector HitBoxLocation = GetAvatarActorFromActorInfo()->GetActorLocation() + ForwardVector + FVector(0.f, 0.f, HitBoxElevationOffset);
-	GetWorld()->OverlapMultiByChannel(OverlapResults,HitBoxLocation, FQuat::Identity, ECC_Pawn, Sphere, QueryParams, ResponseParams);
-	
+	const FVector Forward = GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitBoxForwardOffset;
+	const FVector HitBoxLocation = GetAvatarActorFromActorInfo()->GetActorLocation() + Forward + FVector(0.f, 0.f, HitBoxElevationOffset);
+
+	GetWorld()->OverlapMultiByChannel(OverlapResults, HitBoxLocation, FQuat::Identity, ECC_Visibility, Sphere, QueryParams, ResponseParams);
+
 	TArray<AActor*> ActorsHit;
 	for (const FOverlapResult& Result : OverlapResults)
 	{
@@ -36,10 +34,11 @@ TArray<AActor*> USBS_Primary::HitBoxOverlapTest()
 		ActorsHit.AddUnique(Result.GetActor());
 	}
 
-	if(bDrawDebugs)
+	if (bDrawDebugs)
 	{
 		DrawHitBoxOverlapDebugs(OverlapResults, HitBoxLocation);
 	}
+
 	return ActorsHit;
 }
 
@@ -47,17 +46,14 @@ void USBS_Primary::SendHitReactToActors(const TArray<AActor*>& ActorsHit)
 {
 	for (AActor* HitActor : ActorsHit)
 	{
-		if (!IsValid(HitActor)) continue;
-
-		FGameplayEventData PayLoad;
-		PayLoad.Instigator = GetOwningActorFromActorInfo();
-		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(HitActor, SBSTags::Events::Enemy::HitReact, PayLoad);
+		FGameplayEventData Payload;
+		Payload.Instigator = GetAvatarActorFromActorInfo();
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(HitActor, SBSTags::Events::Enemy::HitReact, Payload);
 	}
 }
 
 void USBS_Primary::DrawHitBoxOverlapDebugs(const TArray<FOverlapResult>& OverlapResults, const FVector HitBoxLocation) const
 {
-	//Draw debug sphere
 	DrawDebugSphere(GetWorld(), HitBoxLocation, HitBoxRadius, 16, FColor::Red, false, 3.f);
 
 	for (const FOverlapResult& Result : OverlapResults)
@@ -65,7 +61,7 @@ void USBS_Primary::DrawHitBoxOverlapDebugs(const TArray<FOverlapResult>& Overlap
 		if (IsValid(Result.GetActor()))
 		{
 			FVector DebugLocation = Result.GetActor()->GetActorLocation();
-			DebugLocation.Z += 100.f; //Offset debug line upwards for visibility
+			DebugLocation.Z += 100.f;
 			DrawDebugSphere(GetWorld(), DebugLocation, 30.f, 10, FColor::Green, false, 3.f);
 		}
 	}
