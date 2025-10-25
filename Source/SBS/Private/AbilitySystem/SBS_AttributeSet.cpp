@@ -2,6 +2,7 @@
 
 
 #include "AbilitySystem/SBS_AttributeSet.h"
+#include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"	
 
 
@@ -22,6 +23,28 @@ void USBS_AttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(USBS_AttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USBS_AttributeSet, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(USBS_AttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
+
+	DOREPLIFETIME(ThisClass, bAttributesInitialized);
+}
+
+void USBS_AttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+	
+	if (!bAttributesInitialized)
+	{
+		bAttributesInitialized = true;
+		OnAttributesInitialized.Broadcast();
+	}
+
+}
+
+void USBS_AttributeSet::OnRep_AttributesInitialized()
+{
+	if(bAttributesInitialized)
+	{
+		OnAttributesInitialized.Broadcast();
+	}
 }
 
 void USBS_AttributeSet::OnRep_Health(const FGameplayAttributeData& OldValue)

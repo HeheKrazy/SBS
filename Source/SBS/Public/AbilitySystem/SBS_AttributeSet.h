@@ -14,6 +14,8 @@
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 
+
+
 /**
 * EXAMPLE Setup for a single attribute called Health
  * 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Health")
@@ -25,6 +27,10 @@
 	ATTRIBUTE_ACCESSORS(USBS_AttributeSet, Health)
  *
  */
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAttributesInitialized);
+
+
 UCLASS()
 class SBS_API USBS_AttributeSet : public UAttributeSet
 {
@@ -33,7 +39,16 @@ class SBS_API USBS_AttributeSet : public UAttributeSet
 public:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributesInitialized OnAttributesInitialized;
+
+	UPROPERTY(ReplicatedUsing = OnRep_AttributesInitialized)
+	bool bAttributesInitialized = false;
+
+	UFUNCTION()
+	void OnRep_AttributesInitialized();
 
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldValue);

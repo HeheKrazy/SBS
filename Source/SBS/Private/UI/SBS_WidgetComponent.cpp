@@ -15,7 +15,10 @@ void USBS_WidgetComponent::BeginPlay()
 	if (!IsASCInitialized())
 	{
 		SBSCharacter->OnASCInitialized.AddDynamic(this, &ThisClass::OnASCInitialized);
+		return;
 	}
+
+	InitializeAttributeDelegate();
 }
 
 void USBS_WidgetComponent::InitAbilitySystemData()
@@ -35,6 +38,23 @@ void USBS_WidgetComponent::OnASCInitialized(UAbilitySystemComponent* ASC, UAttri
 	AbilitySystemComponent = Cast<USBSAbilitySystemComponent>(ASC);
 	AttributeSet = Cast<USBS_AttributeSet>(AS);
 
-	//TODO: Check if the attribute set has been initialized properly
-	//if not, bind to some delegate
+	if(!IsASCInitialized()) {return;}
+	InitializeAttributeDelegate();
+}
+
+void USBS_WidgetComponent::InitializeAttributeDelegate()
+{
+	if (!AttributeSet->bAttributesInitialized)
+	{
+		AttributeSet->OnAttributesInitialized.AddDynamic(this, &ThisClass::BindToAttributeChange);
+	}
+	else
+	{
+		BindToAttributeChange();
+	}
+}
+
+void USBS_WidgetComponent::BindToAttributeChange()
+{
+	//todo listen for changes to gameplay attributes and update the widget
 }

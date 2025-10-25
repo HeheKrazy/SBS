@@ -34,5 +34,10 @@ private:
 
 	UFUNCTION()
 	void OnASCInitialized(UAbilitySystemComponent* ASC, UAttributeSet* AS);
+	
+	void InitializeAttributeDelegate();
+
+	UFUNCTION()
+	void BindToAttributeChange();
 
 };
