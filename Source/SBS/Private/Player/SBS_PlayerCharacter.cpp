@@ -1,7 +1,7 @@
 // Copyright HeheKrazy
 
 
-#include "SBS_PlayerCharacter.h"
+#include "Player/SBS_PlayerCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"

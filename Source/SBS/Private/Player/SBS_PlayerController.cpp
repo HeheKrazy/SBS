@@ -3,6 +3,8 @@
 #include "Player/SBS_PlayerController.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "InputActionValue.h"
+#include "GameplayTagContainer.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayTags/SBSTags.h"	
