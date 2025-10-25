@@ -29,6 +29,15 @@ void ASBS_BaseCharacter::GiveStartupAbilities()
 
 }
 
+void ASBS_BaseCharacter::InitializeAttributes() const
+{
+	checkf(IsValid(InitializeAttributesEffect), TEXT("InitializeAttributesEffect is not valid on %s. Please check the Blueprint."), *GetName());
+
+	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(InitializeAttributesEffect, 1, ContextHandle);
+	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+}
+
 
 
 

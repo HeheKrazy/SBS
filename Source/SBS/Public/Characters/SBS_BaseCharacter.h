@@ -8,6 +8,7 @@
 #include "SBS_BaseCharacter.generated.h"
 
 class UGameplayAbility;
+class UGameplayEffect;
 
 UCLASS(Abstract)
 class SBS_API ASBS_BaseCharacter : public ACharacter, public IAbilitySystemInterface
@@ -22,10 +23,14 @@ public:
 protected:
 
 	void GiveStartupAbilities();
+	void InitializeAttributes()const;
 
 private:
 
-	UPROPERTY(EditDefaultsOnly, Category = "SBS|Abilities")
+	UPROPERTY(EditDefaultsOnly, Category = "SBS|Effects")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
+	UPROPERTY(EditDefaultsOnly, Category = "SBS|Effects")
+	TSubclassOf<UGameplayEffect> InitializeAttributesEffect;
 
 };

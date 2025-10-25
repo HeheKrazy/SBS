@@ -52,6 +52,7 @@ void ASBS_PlayerCharacter::PossessedBy(AController* NewController)
 
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
 	GiveStartupAbilities();
+	InitializeAttributes();
 }
 
 void ASBS_PlayerCharacter::OnRep_PlayerState()
