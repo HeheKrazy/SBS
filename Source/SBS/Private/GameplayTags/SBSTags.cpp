@@ -19,7 +19,7 @@ namespace SBSTags
 	{
 		namespace Enemy
 		{
-			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Tertiary, "SBSTags.Events.Enemy.HitReact", "Tag for Enemy HitReact Event.");
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "SBSTags.Events.Enemy.HitReact", "Tag for Enemy HitReact Event.");
 		}
 	}
 }

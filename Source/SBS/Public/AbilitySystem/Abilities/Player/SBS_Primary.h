@@ -17,9 +17,14 @@ class SBS_API USBS_Primary : public USBS_GameplayAbility
 public:
 
 	UFUNCTION(BlueprintCallable, Category = "SBS|Abilities")
-	void HitBoxOverlapTest();
+	TArray<AActor*> HitBoxOverlapTest();
+
+	UFUNCTION(BlueprintCallable, Category = "SBS|Abilities")
+	void SendHitReactToActors(const TArray<AActor*>& ActorsHit);
 
 private:
+
+void DrawHitBoxOverlapDebugs(const TArray<FOverlapResult>& OverlapResults, const FVector HitBoxLocation) const;
 
 	UPROPERTY(EditDefaultsOnly, Category = "SBS|Abilities")
 	float HitBoxRadius = 100.f;
