@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AttributeSet.h"
 #include "Components/WidgetComponent.h"
 #include "SBS_WidgetComponent.generated.h"
 
@@ -13,16 +14,18 @@ class ASBS_BaseCharacter;
 class USBSAbilitySystemComponent;
 class USBS_AttributeSet;
 class UAbilitySystemComponent;
-class UAttributeSet;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SBS_API USBS_WidgetComponent : public UWidgetComponent
 {
 	GENERATED_BODY()
 
-public:
+protected:
 
-	virtual void BeginPlay() override;	
+	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere)
+	TMap<FGameplayAttribute, FGameplayAttribute> AttributeMap;
 
 private:
 	TWeakObjectPtr<ASBS_BaseCharacter> SBSCharacter;
@@ -39,5 +42,7 @@ private:
 
 	UFUNCTION()
 	void BindToAttributeChange();
+
+	void BindWidgetToAttributeChanges(UWidget* WidgetObject, const TTuple<FGameplayAttribute, FGameplayAttribute>& Pair) const;
 
 };

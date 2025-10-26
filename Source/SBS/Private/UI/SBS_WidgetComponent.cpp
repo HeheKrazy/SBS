@@ -5,6 +5,8 @@
 #include "AbilitySystem/SBSAbilitySystemComponent.h"
 #include "AbilitySystem/SBS_AttributeSet.h"
 #include "Characters/SBS_BaseCharacter.h"
+#include "UI/SBS_AttributeWidget.h"
+#include "Blueprint/WidgetTree.h"
 
 void USBS_WidgetComponent::BeginPlay()
 {
@@ -56,5 +58,27 @@ void USBS_WidgetComponent::InitializeAttributeDelegate()
 
 void USBS_WidgetComponent::BindToAttributeChange()
 {
-	//todo listen for changes to gameplay attributes and update the widget
+	for (const TTuple<FGameplayAttribute, FGameplayAttribute>& Pair : AttributeMap)
+	{
+		BindWidgetToAttributeChanges(GetUserWidgetObject(), Pair); // Check the owned widget object
+
+		GetUserWidgetObject()->WidgetTree->ForEachWidget([this, &Pair](UWidget* ChildWidget) 
+			{
+				BindWidgetToAttributeChanges(ChildWidget, Pair);
+			});
+
+	}
+}
+
+void USBS_WidgetComponent::BindWidgetToAttributeChanges(UWidget* WidgetObject, const TTuple<FGameplayAttribute, FGameplayAttribute>& Pair) const
+{
+	USBS_AttributeWidget* AttributeWidget = Cast<USBS_AttributeWidget>(WidgetObject);
+	if (!IsValid(AttributeWidget)) return; // We only care about SBS_AttributeWidget
+	if (!AttributeWidget->MatchesAttributes(Pair)) return;	// Only bind if the attributes match
+
+	AttributeWidget->OnAttributeChanged(Pair, AttributeSet.Get()); // Initial update
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Key).AddLambda([this, AttributeWidget, &Pair](const FOnAttributeChangeData& AttributeChangeData)
+		{
+			AttributeWidget->OnAttributeChanged(Pair, AttributeSet.Get()); // For changes during gameplay
+		});
 }
