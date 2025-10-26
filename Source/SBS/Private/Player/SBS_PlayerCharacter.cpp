@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/SBS_PlayerState.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/SBS_AttributeSet.h"
 
 ASBS_PlayerCharacter::ASBS_PlayerCharacter()
 {
@@ -62,6 +63,11 @@ void ASBS_PlayerCharacter::PossessedBy(AController* NewController)
 	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
 	GiveStartupAbilities();
 	InitializeAttributes();
+
+	USBS_AttributeSet* SBSAttributeSet = Cast<USBS_AttributeSet>(GetAttributeSet());
+	if (!IsValid(SBSAttributeSet)) return;
+
+	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(SBSAttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
 }
 
 void ASBS_PlayerCharacter::OnRep_PlayerState()

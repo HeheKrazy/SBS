@@ -39,4 +39,10 @@ void ASBS_EnemyCharacter::BeginPlay()
 
 	GiveStartupAbilities();
 	InitializeAttributes();
+
+
+	USBS_AttributeSet* SBSAttributeSet = Cast<USBS_AttributeSet>(GetAttributeSet());
+	if (!IsValid(SBSAttributeSet)) return;
+
+	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(SBSAttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
 }
