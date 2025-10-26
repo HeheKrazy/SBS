@@ -16,7 +16,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnAttributeChanged, FGameplayAtt
 struct FOnAttributeChangeData; 
 class UAbilitySystemComponent;
 
-UCLASS()
+UCLASS(BlueprintType, meta = (ExposedAsyncProxy = AsyncTask))
 class SBS_API USBS_AttributeChangeTask : public UBlueprintAsyncActionBase
 {
 	GENERATED_BODY()
