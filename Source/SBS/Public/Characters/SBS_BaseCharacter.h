@@ -35,6 +35,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "SBS|Death")
 	virtual void HandleRespawn();
 
+	UFUNCTION(BlueprintCallable, Category = "SBS|Attributes")
+	virtual void ResetAttributes();
+
 protected:
 
 	void GiveStartupAbilities();
@@ -42,6 +45,8 @@ protected:
 
 	void OnHealthChanged(const FOnAttributeChangeData& AttributeChangeData);	
 	virtual void HandleDeath();
+
+	void ApplyGameplayEffectToSelfChecked(TSubclassOf<UGameplayEffect> Effect) const;
 
 private:
 
@@ -51,6 +56,11 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "SBS|Effects")
 	TSubclassOf<UGameplayEffect> InitializeAttributesEffect;
 
+	UPROPERTY(EditDefaultsOnly, Category = "SBS|Effects")
+	TSubclassOf<UGameplayEffect> ResetAttributesEffect;
+
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Replicated)
 	bool bAlive = true;
+
+	
 };

@@ -38,11 +38,7 @@ void ASBS_BaseCharacter::GiveStartupAbilities()
 
 void ASBS_BaseCharacter::InitializeAttributes() const
 {
-	checkf(IsValid(InitializeAttributesEffect), TEXT("InitializeAttributesEffect is not valid on %s. Please check the Blueprint."), *GetName());
-
-	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
-	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(InitializeAttributesEffect, 1, ContextHandle);
-	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+	ApplyGameplayEffectToSelfChecked(InitializeAttributesEffect);
 }
 
 void ASBS_BaseCharacter::OnHealthChanged(const FOnAttributeChangeData& AttributeChangeData)
@@ -63,9 +59,23 @@ void ASBS_BaseCharacter::HandleDeath()
 	}
 }
 
+void ASBS_BaseCharacter::ApplyGameplayEffectToSelfChecked(TSubclassOf<UGameplayEffect> Effect) const
+{
+	checkf(IsValid(Effect), TEXT("%s is not valid on %s. Please check the Blueprint."), *Effect->GetName(), *GetName());
+
+	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(Effect, 1, ContextHandle);
+	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+}
+
 void ASBS_BaseCharacter::HandleRespawn()
 {
 	bAlive = true;
+}
+
+void ASBS_BaseCharacter::ResetAttributes()
+{
+	ApplyGameplayEffectToSelfChecked(ResetAttributesEffect);
 }
 
 
