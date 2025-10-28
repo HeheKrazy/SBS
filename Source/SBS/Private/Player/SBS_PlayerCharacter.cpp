@@ -36,6 +36,8 @@ ASBS_PlayerCharacter::ASBS_PlayerCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>("FollowCamera");
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
+
+	Tags.Add(SBSTags::Player);
 }
 
 UAbilitySystemComponent* ASBS_PlayerCharacter::GetAbilitySystemComponent() const

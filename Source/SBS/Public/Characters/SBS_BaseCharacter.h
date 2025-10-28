@@ -7,6 +7,12 @@
 #include "AbilitySystemInterface.h"
 #include "SBS_BaseCharacter.generated.h"
 
+// Different than a GameplayTag, but used for similar purposes.
+namespace SBSTags
+{
+	extern SBS_API const FName Player;
+}
+
 struct FOnAttributeChangeData;
 class UGameplayAbility;
 class UGameplayEffect;

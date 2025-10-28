@@ -5,6 +5,11 @@
 #include "AbilitySystemComponent.h"
 #include "Net/UnrealNetwork.h"
 
+namespace SBSTags
+{
+	const FName Player = FName("Player");
+}
+
 ASBS_BaseCharacter::ASBS_BaseCharacter()
 {
 

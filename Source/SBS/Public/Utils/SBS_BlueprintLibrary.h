@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "InterchangeTranslatorBase.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "SBS_BlueprintLibrary.generated.h"
 
@@ -13,6 +15,18 @@ enum class EHitDirection :uint8
 	Right,
 	Forward,
 	Backward
+};
+
+USTRUCT(BlueprintType)
+struct FClosestActorWithTagResult
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite)
+	TWeakObjectPtr<AActor> Actor;
+
+	UPROPERTY(BlueprintReadWrite)
+	float Distance{0.f};
 };
 
 UCLASS()
@@ -27,4 +41,7 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	static FName GetHitDirectionName(const EHitDirection HitDirection);
+
+	UFUNCTION(BlueprintCallable)
+	static FClosestActorWithTagResult FindClosestActorWithTag(const UObject* WorldContextObject, const FVector& Origin, const FName& Tag);
 };
