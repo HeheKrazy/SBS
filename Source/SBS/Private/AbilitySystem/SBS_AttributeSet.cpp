@@ -4,6 +4,8 @@
 #include "AbilitySystem/SBS_AttributeSet.h"
 #include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"	
+#include "AbilitySystemBlueprintLibrary.h"
+#include "GameplayTags/SBSTags.h"
 
 
 /*
@@ -31,6 +33,14 @@ void USBS_AttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 {
 	Super::PostGameplayEffectExecute(Data);
 	
+	if(Data.EvaluatedData.Attribute == GetHealthAttribute() && GetHealth() <= 0.f)
+	{
+		//ToDo Send gameplay event to causer of effect. (E.g., to inform that actor they killed this actor)
+		FGameplayEventData Payload;
+		Payload.Instigator = Data.Target.GetAvatarActor();
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Data.EffectSpec.GetEffectContext().GetInstigator(), SBSTags::Events::KillScored, Payload);
+	}
+
 	if (!bAttributesInitialized)
 	{
 		bAttributesInitialized = true;

@@ -17,6 +17,8 @@ namespace SBSTags
 
 	namespace Events
 	{
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(KillScored, "SBSTags.Events.KillScored", "Tag for KillScored Event.");
+
 		namespace Enemy
 		{
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "SBSTags.Events.Enemy.HitReact", "Tag for Enemy HitReact Event.");
