@@ -4,6 +4,7 @@
 #include "Characters/SBS_EnemyCharacter.h"
 #include "AbilitySystem/SBSAbilitySystemComponent.h"
 #include "AbilitySystem/SBS_AttributeSet.h"	
+#include "AIController.h"
 
 ASBS_EnemyCharacter::ASBS_EnemyCharacter()
 {
@@ -45,4 +46,13 @@ void ASBS_EnemyCharacter::BeginPlay()
 	if (!IsValid(SBSAttributeSet)) return;
 
 	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(SBSAttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
+}
+
+void ASBS_EnemyCharacter::HandleDeath()
+{
+	Super::HandleDeath();
+	// Additional death logic for enemy characters can be added here
+	AAIController* AIController = GetController<AAIController>();
+	if (!IsValid(AIController)) return;
+	AIController->StopMovement();
 }

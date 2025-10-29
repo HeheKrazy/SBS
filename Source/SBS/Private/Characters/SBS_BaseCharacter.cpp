@@ -57,11 +57,6 @@ void ASBS_BaseCharacter::OnHealthChanged(const FOnAttributeChangeData& Attribute
 void ASBS_BaseCharacter::HandleDeath()
 {
 	bAlive = false;
-
-	if(IsValid(GEngine))
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, FString::Printf(TEXT("%s has died."), *GetName()));
-	}
 }
 
 void ASBS_BaseCharacter::ApplyGameplayEffectToSelfChecked(TSubclassOf<UGameplayEffect> Effect) const
