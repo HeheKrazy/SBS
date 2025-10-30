@@ -5,6 +5,7 @@
 #include "AbilitySystem/SBSAbilitySystemComponent.h"
 #include "AbilitySystem/SBS_AttributeSet.h"	
 #include "AIController.h"
+#include "Net/UnrealNetwork.h"
 
 ASBS_EnemyCharacter::ASBS_EnemyCharacter()
 {
@@ -15,6 +16,13 @@ ASBS_EnemyCharacter::ASBS_EnemyCharacter()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
 	AttributeSet = CreateDefaultSubobject<USBS_AttributeSet>("AttributeSet");
+}
+
+void ASBS_EnemyCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ThisClass, bIsBeingLaunched);
 }
 
 UAbilitySystemComponent* ASBS_EnemyCharacter::GetAbilitySystemComponent() const

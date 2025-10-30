@@ -13,6 +13,11 @@ namespace SBSTags
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Secondary, "SBSTags.SBSAbilities.Secondary", "Secondary ability tag for SBS.");
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Tertiary, "SBSTags.SBSAbilities.Tertiary", "Tertiary ability tag for SBS.");
 
+
+		namespace Enemy
+		{
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attack, "SBSTags.SBSAbilities.Enemy.Attack", "Attack ability tag for Enemy.");
+		}
 	}
 
 	namespace Events
@@ -22,6 +27,7 @@ namespace SBSTags
 		namespace Enemy
 		{
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "SBSTags.Events.Enemy.HitReact", "Tag for Enemy HitReact Event.");
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(EndAttack, "SBSTags.Events.Enemy.EndAttack", "Tag for Enemy Ending an Attack Event.");
 		}
 	}
 }

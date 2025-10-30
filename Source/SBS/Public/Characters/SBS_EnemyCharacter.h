@@ -22,6 +22,8 @@ public:
 
 	ASBS_EnemyCharacter();
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual UAttributeSet* GetAttributeSet() const override;
 
@@ -33,6 +35,15 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SBS|AI")
 	float MaxAttackDelay{.5f};
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void RotateToTarget(AActor* RotateToTarget);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	float GetTimelineLength();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Replicated)
+	bool bIsBeingLaunched{ false };
 
 
 protected:
