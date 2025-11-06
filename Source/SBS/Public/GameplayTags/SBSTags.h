@@ -11,6 +11,11 @@
 
 namespace SBSTags
 {
+	namespace SetByCaller
+	{
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Projectile);
+	}
+
 	namespace SBSAbilities
 	{
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(ActivateOnGiven);

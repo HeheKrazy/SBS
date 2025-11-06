@@ -5,6 +5,8 @@
 #include "Player/SBS_PlayerCharacter.h"
 #include "AbilitySystemComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include <AbilitySystemBlueprintLibrary.h>
+#include "GameplayTags/SBSTags.h"
 
 ASBS_Projectile::ASBS_Projectile()
 {
@@ -26,8 +28,8 @@ void ASBS_Projectile::NotifyActorBeginOverlap(AActor* OtherActor)
 
 	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
 	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect, 1.f, ContextHandle);
-	
-	//TODO Use Damage variable in effect spec 
+
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, SBSTags::SetByCaller::Projectile, Damage);
 
 	AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 

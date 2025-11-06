@@ -6,6 +6,11 @@
 
 namespace SBSTags
 {
+	namespace SetByCaller
+	{
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Projectile, "SBSTags.SetByCaller.Projectile", "Tags for Set by Caller Magnitude for projectile.");
+	}
+
 	namespace SBSAbilities
 	{
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(ActivateOnGiven, "SBSTags.SBSAbilities.ActivateOnGiven", "Tags for Abilities that should be activated immediately once given.");
