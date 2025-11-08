@@ -33,6 +33,7 @@ namespace SBSTags
 		{
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "SBSTags.Events.Enemy.HitReact", "Tag for Enemy HitReact Event.");
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(EndAttack, "SBSTags.Events.Enemy.EndAttack", "Tag for Enemy Ending an Attack Event.");
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(MeleeTraceHit, "SBSTags.Events.Enemy.MeleeTraceHit", "Tag for Enemy Melee Trace Hit Event.");
 		}
 	}
 }
