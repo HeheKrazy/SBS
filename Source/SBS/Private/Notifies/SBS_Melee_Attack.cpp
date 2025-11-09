@@ -56,8 +56,8 @@ TArray<FHitResult> USBS_Melee_Attack::PerformSphereTrace(USkeletalMeshComponent*
 			EDrawDebugTrace::ForDuration,
 			bHit,
 			OutHits,
-			FColor::Green,
 			FColor::Red,
+			FColor::Green,
 			5.f);
 	}
 

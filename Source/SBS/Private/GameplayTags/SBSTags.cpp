@@ -29,6 +29,12 @@ namespace SBSTags
 	{
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(KillScored, "SBSTags.Events.KillScored", "Tag for KillScored Event.");
 
+		namespace Player
+		{
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "SBSTags.Events.Player.HitReact", "Tag for Player HitReact Event.");
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Death, "SBSTags.Events.Player.Death", "Tag for Player Death Event.");
+		}
+
 		namespace Enemy
 		{
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "SBSTags.Events.Enemy.HitReact", "Tag for Enemy HitReact Event.");

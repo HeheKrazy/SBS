@@ -7,6 +7,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include <AbilitySystemBlueprintLibrary.h>
 #include "GameplayTags/SBSTags.h"
+#include <Utils/SBS_BlueprintLibrary.h>
 
 ASBS_Projectile::ASBS_Projectile()
 {
@@ -26,12 +27,11 @@ void ASBS_Projectile::NotifyActorBeginOverlap(AActor* OtherActor)
 	UAbilitySystemComponent* AbilitySystemComponent = PlayerCharacter->GetAbilitySystemComponent();
 	if (!IsValid(AbilitySystemComponent) || !HasAuthority()) return;
 
-	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
-	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect, 1.f, ContextHandle);
+	FGameplayEventData Payload;
+	Payload.Instigator = GetOwner();
+	Payload.Target = PlayerCharacter;
 
-	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, SBSTags::SetByCaller::Projectile, Damage);
-
-	AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+	USBS_BlueprintLibrary::SendDamageEventToPlayer(PlayerCharacter, DamageEffect, Payload, SBSTags::SetByCaller::Projectile, Damage);
 
 	SpawnImpactEffects();
 	Destroy();

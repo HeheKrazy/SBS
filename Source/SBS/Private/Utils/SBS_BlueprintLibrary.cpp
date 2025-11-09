@@ -4,6 +4,9 @@
 #include "Utils/SBS_BlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include <Characters/SBS_BaseCharacter.h>
+#include <AbilitySystem/SBS_AttributeSet.h>
+#include <GameplayTags/SBSTags.h>
+#include <AbilitySystemBlueprintLibrary.h>
 
 EHitDirection USBS_BlueprintLibrary::GetHitDirection(const FVector& TargetForward, const FVector& ToInstigator)
 {
@@ -64,4 +67,30 @@ FClosestActorWithTagResult USBS_BlueprintLibrary::FindClosestActorWithTag(const 
 	Result.Distance = ClosestDistance;
 
 	return Result;
+}
+
+void USBS_BlueprintLibrary::SendDamageEventToPlayer(AActor* Target, const TSubclassOf<UGameplayEffect>& DamageEffect,
+	const FGameplayEventData& Payload, const FGameplayTag& DataTag, float Damage)
+{
+	ASBS_BaseCharacter* PlayerCharacter = Cast<ASBS_BaseCharacter>(Target);
+	if (!IsValid(PlayerCharacter)) return;
+	if (!PlayerCharacter->IsAlive()) return;
+
+	USBS_AttributeSet* AttributeSet = Cast<USBS_AttributeSet>(PlayerCharacter->GetAttributeSet());
+	if (!IsValid(AttributeSet)) return;
+
+	const bool bLethal = AttributeSet->GetHealth() - Damage <= 0.f;
+	const FGameplayTag EventTag = bLethal ? SBSTags::Events::Player::Death : SBSTags::Events::Player::HitReact;
+
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(PlayerCharacter, EventTag, Payload);
+
+	UAbilitySystemComponent* TargetASC = PlayerCharacter->GetAbilitySystemComponent();
+	if (!IsValid(TargetASC)) return;
+
+	FGameplayEffectContextHandle ContextHandle = TargetASC->MakeEffectContext();
+	FGameplayEffectSpecHandle SpecHandle = TargetASC->MakeOutgoingSpec(DamageEffect, 1.f, ContextHandle);
+
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, DataTag, -Damage);
+
+	TargetASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 }
